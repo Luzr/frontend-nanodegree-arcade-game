@@ -5,8 +5,7 @@ Clone or downlaod the source files to your local computer
 
 ## To Play
 
-Use the Up Down Left and Right arrows on your keyboard to move to with the respective key. 
-test
+Use the Up Down Left and Right arrows on your keyboard to move to with the respective key.
 
 ## Objective
 
