@@ -19,12 +19,12 @@ Enemy.prototype.update = function(dt) {
     this.x = (this.x + this.speed);
     this.y = 83*this.row;
 
-	// if (this.x == player.x && this.y == player.y)
+    // set a 10 pixle "columnlision" between the player and the enemies
 	if (player.x > (this.x - 10) && player.x < (this.x + 10) && this.row == player.row)
-			//console.log("alert alert alert");
+	//console.log("Payer Enemy columnlision");
 		player.reset();
 	
-	//enemy goes off the board
+	//enemy goes off the board reset the game
     if(this.x > 6 * 83){
         this.reset();
     }
@@ -38,11 +38,11 @@ Enemy.prototype.render = function() {
 };
 
 Enemy.prototype.reset = function() {
-    this.col = -1; 
-    this.row = getRandomInt(1,3);
-    this.x = 101 * this.col;
+    this.column = -1; 
+    this.row = randomWholeNum(1,3);
+    this.x = 101 * this.column;
     this.y = 83 * this.row;
-    this.speed = getRandomInt(2,6);
+    this.speed = randomWholeNum(2,6);
 };
 
 // Now write your own player class
@@ -60,13 +60,14 @@ var Player = function(name) {
 
 Player.prototype.update = function(dt) {
     if(this.moveable) {
-        this.x = 101 * this.col;
+        this.x = 101 * this.column;
         this.y = 83 * this.row;
     }
 
     if(this.y < 83 && this.moveable) {
-		console.log("UPDATE /// x: " + this.x + " y: " + this.y + " col:" + this.col + " row: " + this.row);
-        //this.moveable = false;
+		console.log("UPDATE /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);
+        
+        // alert the player that they won the game
 		alert("You've won!");
 		this.reset();
         return true;
@@ -80,38 +81,33 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.reset = function() {
-    this.col = getRandomInt(0,4); 
-    this.row = 5;
+    this.column = randomWholeNum(0,4); 
+    this.row = randomWholeNum(5,4);
     this.moveable = true;
 };
 
 Player.prototype.handleInput = function(key) {
-    switch (key){
-        case 'left':
-            this.col--;
-            break;
-        case 'up':
-            this.row--;
-            break;
-        case 'right':
-            this.col++;
-            break;
-        case 'down':
-            this.row++;
-            break;
-    }
-    if(this.col < 0) this.col = 0;
-    if(this.col > 4) this.col = 4;
-    if(this.row < 0) this.row = 0;
-    if(this.row > 5) this.row = 5;
-	console.log("handleInput /// x: " + this.x + " y: " + this.y + " col:" + this.col + " row: " + this.row);	
+    if (key == 'up'){
+        this.row--;
+        }
+    else if (key == 'down' && this.row < 4){
+        this.row++;
+        }    
+    else if (key == 'left' && this.column > 0 ){
+        this.column--;
+        }
+    else if (key == 'right' && this.column < 4){
+        this.column++;
+        }
+
+        
+    // log where enemies and player are.
+	console.log("handleInput /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);	
 };
 
-function getRandomInt(min, max) {
+function randomWholeNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
-
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -132,6 +128,8 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
+    
+    // check the key being pressed
 	//console.log(e.keyCode);
     player.handleInput(allowedKeys[e.keyCode]);
 	//console.log("returnX: " + player.x + " returnY: " + player.y);
