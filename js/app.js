@@ -2,7 +2,7 @@
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    this.reset();
+    this.restart();
 	
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -17,16 +17,16 @@ Enemy.prototype.update = function(dt) {
     // all computers.
 	
     this.x = (this.x + this.speed);
-    this.y = 83*this.row;
+    this.y = 83 * this.row;
 
-    // set a 10 pixle "columnlision" between the player and the enemies
+    // set a 10 pixle "collision" between the player and the enemies
 	if (player.x > (this.x - 10) && player.x < (this.x + 10) && this.row == player.row)
-	//console.log("Payer Enemy columnlision");
-		player.reset();
+	//console.log("Payer Enemy collision");
+	player.restart();
 	
-	//enemy goes off the board reset the game
+	//enemy goes off the board restart the game
     if(this.x > 6 * 83){
-        this.reset();
+        this.restart();
     }
 };
 
@@ -37,11 +37,11 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Enemy.prototype.reset = function() {
+Enemy.prototype.restart = function() {
     this.column = -1; 
     this.row = randomWholeNum(1,3);
-    this.x = 101 * this.column;
-    this.y = 83 * this.row;
+    this.x =  this.column;
+    this.y =  this.row;
     this.speed = randomWholeNum(2,6);
 };
 
@@ -51,7 +51,7 @@ Enemy.prototype.reset = function() {
 var Player = function(name) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    this.reset();
+    this.restart();
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -62,14 +62,14 @@ Player.prototype.update = function(dt) {
     if(this.moveable) {
         this.x = 101 * this.column;
         this.y = 83 * this.row;
+        // log where the player is
+        console.log("UPDATE /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);
     }
 
     if(this.y < 83 && this.moveable) {
-		console.log("UPDATE /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);
-        
-        // alert the player that they won the game
-		alert("You've won!");
-		this.reset();
+		// alert the player that they won the game
+		alert("You've won! Player will reset.");
+		this.restart();
         return true;
     }
 
@@ -80,7 +80,7 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.reset = function() {
+Player.prototype.restart = function() {
     this.column = randomWholeNum(0,4); 
     this.row = randomWholeNum(5,4);
     this.moveable = true;
@@ -90,7 +90,7 @@ Player.prototype.handleInput = function(key) {
     if (key == 'up'){
         this.row--;
         }
-    else if (key == 'down' && this.row < 4){
+    else if (key == 'down' && this.row < 5){
         this.row++;
         }    
     else if (key == 'left' && this.column > 0 ){
@@ -102,7 +102,7 @@ Player.prototype.handleInput = function(key) {
 
         
     // log where enemies and player are.
-	console.log("handleInput /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);	
+	// console.log("handleInput /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);	
 };
 
 function randomWholeNum(min, max) {
@@ -112,9 +112,12 @@ function randomWholeNum(min, max) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var allEnemies = [];
-for(var i = 0; i < 4; i++){
-    allEnemies.push(new Enemy());
+var allEnemies = [0, 1, 2, 3];
+// allEnemies[0] = new Enemy()
+// allEnemies[1] = new Enemy()
+// allEnemies[2] = new Enemy()
+for (i = 0; i < allEnemies.length; i++){
+    allEnemies[i] = new Enemy()
 }
 
 var player = new Player();
@@ -130,7 +133,7 @@ document.addEventListener('keyup', function(e) {
     };
     
     // check the key being pressed
-	//console.log(e.keyCode);
+	// console.log(e.keyCode);
     player.handleInput(allowedKeys[e.keyCode]);
 	//console.log("returnX: " + player.x + " returnY: " + player.y);
 });
