@@ -8,7 +8,7 @@ var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     this.restart();
-	
+
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -20,17 +20,17 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-	
+
     this.x = (this.x + this.speed);
     this.y = 83 * this.row;
 
     // set a 10 pixle "collision" between the player and the enemies
-	if (player.x > (this.x - 10) && player.x < (this.x + 10) && this.row == player.row)
-	//console.log("Payer Enemy collision");
-	player.restart();
-	
-	//enemy goes off the board restart the game
-    if(this.x > 6 * 80){
+    if (player.x > (this.x - 10) && player.x < (this.x + 10) && this.row == player.row)
+        //console.log("Payer Enemy collision");
+        player.restart();
+
+    //enemy goes off the board restart the game
+    if (this.x > 6 * 80) {
         this.restart();
     }
 };
@@ -41,12 +41,12 @@ Enemy.prototype.render = function() {
 };
 
 Enemy.prototype.restart = function() {
-    this.speed = randomWholeNum(4,8);
-    this.row = randomWholeNum(1,3);
-    this.column = 0;     
-    this.x =  this.column;
-    this.y =  this.row;
-    };
+    this.speed = Math.floor(Math.random() * (8 - 4 + 1)) + 4;
+    this.row = Math.floor(Math.random() * (3 - 1 + 1)) + 1;
+    this.column = 0;
+    this.x = this.column;
+    this.y = this.row;
+};
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -62,16 +62,16 @@ var Player = function(name) {
 };
 
 Player.prototype.update = function(dt) {
-    
-        this.x = 100 * this.column;
-        this.y = 84 * this.row;
-        // log where the player is
-        //console.log("UPDATE /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);
-    
-    if(this.y < 84) {
-		// alert the player that they won the game
-		alert("You've won! Player will reset to the bottom.");
-		this.restart();
+
+    this.x = 100 * this.column;
+    this.y = 83 * this.row;
+    // log where the player is
+    //console.log("UPDATE /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);
+
+    if (this.y < 83) {
+        // alert the player that they won the game
+        alert("You've won! Player will reset to the bottom.");
+        this.restart();
     }
 };
 
@@ -82,31 +82,31 @@ Player.prototype.render = function() {
 
 // Start the player in the middle of the map.
 Player.prototype.restart = function() {
-    this.column = 2; 
+    this.column = 2;
     this.row = 5;
-    
+
 };
 
 // input keys for the player
 Player.prototype.handleInput = function(key) {
-    if (key == 'up'){
+    if (key == 'up') {
         this.row--;
-        }
-        // move around the map with the limit of the bottom tile
-    else if (key == 'down' && this.row < 5){
+    }
+    // move around the map with the limit of the bottom tile
+    else if (key == 'down' && this.row < 5) {
         this.row++;
-        }   
-         // move around the map with the limit of the left tile
-    else if (key == 'left' && this.column > 0 ){
+    }
+    // move around the map with the limit of the left tile
+    else if (key == 'left' && this.column > 0) {
         this.column--;
-        }
-        // move around the map with the limit of the right tile
-    else if (key == 'right' && this.column < 4){
+    }
+    // move around the map with the limit of the right tile
+    else if (key == 'right' && this.column < 4) {
         this.column++;
-        }
-        
+    }
+
     // log where enemies and player are.
-	// console.log("handleInput /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);	
+    // console.log("handleInput /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);	
 };
 
 // Now instantiate your objects.
@@ -115,7 +115,7 @@ Player.prototype.handleInput = function(key) {
 
 // Max of 4 enemies
 var allEnemies = [0, 1, 2, 3];
-for (i = 0; i < allEnemies.length; i++){
+for (i = 0; i < allEnemies.length; i++) {
     allEnemies[i] = new Enemy()
 }
 
@@ -130,9 +130,9 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-    
+
     // check the key being pressed
-	// console.log(e.keyCode);
+    // console.log(e.keyCode);
     player.handleInput(allowedKeys[e.keyCode]);
-	//console.log("returnX: " + player.x + " returnY: " + player.y);
+    //console.log("returnX: " + player.x + " returnY: " + player.y);
 });
