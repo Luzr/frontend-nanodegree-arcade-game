@@ -1,3 +1,8 @@
+//Random Number Generator from Stacked Exchange
+function randomWholeNum(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -25,7 +30,7 @@ Enemy.prototype.update = function(dt) {
 	player.restart();
 	
 	//enemy goes off the board restart the game
-    if(this.x > 6 * 83){
+    if(this.x > 6 * 80){
         this.restart();
     }
 };
@@ -38,11 +43,11 @@ Enemy.prototype.render = function() {
 };
 
 Enemy.prototype.restart = function() {
-    this.column = -1; 
+    this.column = 0; 
     this.row = randomWholeNum(1,3);
     this.x =  this.column;
     this.y =  this.row;
-    this.speed = randomWholeNum(2,6);
+    this.speed = randomWholeNum(4,8);
 };
 
 // Now write your own player class
@@ -60,42 +65,45 @@ var Player = function(name) {
 
 Player.prototype.update = function(dt) {
     if(this.moveable) {
-        this.x = 101 * this.column;
-        this.y = 83 * this.row;
+        this.x = 100 * this.column;
+        this.y = 84 * this.row;
         // log where the player is
-        console.log("UPDATE /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);
+        //console.log("UPDATE /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);
     }
 
-    if(this.y < 83 && this.moveable) {
+    if(this.y < 84 && this.moveable) {
 		// alert the player that they won the game
-		alert("You've won! Player will reset.");
+		alert("You've won! Player will reset to the bottom.");
 		this.restart();
-        return true;
     }
-
-    return false;
 };
 
+//Rener the player
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Start the player in the middle of the map.
 Player.prototype.restart = function() {
-    this.column = randomWholeNum(0,4); 
-    this.row = randomWholeNum(5,4);
+    this.column = 2; 
+    this.row = 5;
     this.moveable = true;
 };
 
+// input keys for the player
 Player.prototype.handleInput = function(key) {
     if (key == 'up'){
         this.row--;
         }
+        // move around the map with the limit of the bottom tile
     else if (key == 'down' && this.row < 5){
         this.row++;
-        }    
+        }   
+         // move around the map with the limit of the left tile
     else if (key == 'left' && this.column > 0 ){
         this.column--;
         }
+        // move around the map with the limit of the right tile
     else if (key == 'right' && this.column < 4){
         this.column++;
         }
@@ -105,17 +113,12 @@ Player.prototype.handleInput = function(key) {
 	// console.log("handleInput /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);	
 };
 
-function randomWholeNum(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
+// Max of 4 enemies
 var allEnemies = [0, 1, 2, 3];
-// allEnemies[0] = new Enemy()
-// allEnemies[1] = new Enemy()
-// allEnemies[2] = new Enemy()
 for (i = 0; i < allEnemies.length; i++){
     allEnemies[i] = new Enemy()
 }
