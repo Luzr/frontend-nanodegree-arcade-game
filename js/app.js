@@ -35,20 +35,18 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-
-
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 Enemy.prototype.restart = function() {
-    this.column = 0; 
+    this.speed = randomWholeNum(4,8);
     this.row = randomWholeNum(1,3);
+    this.column = 0;     
     this.x =  this.column;
     this.y =  this.row;
-    this.speed = randomWholeNum(4,8);
-};
+    };
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -64,14 +62,13 @@ var Player = function(name) {
 };
 
 Player.prototype.update = function(dt) {
-    if(this.moveable) {
+    
         this.x = 100 * this.column;
         this.y = 84 * this.row;
         // log where the player is
         //console.log("UPDATE /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);
-    }
-
-    if(this.y < 84 && this.moveable) {
+    
+    if(this.y < 84) {
 		// alert the player that they won the game
 		alert("You've won! Player will reset to the bottom.");
 		this.restart();
@@ -87,7 +84,7 @@ Player.prototype.render = function() {
 Player.prototype.restart = function() {
     this.column = 2; 
     this.row = 5;
-    this.moveable = true;
+    
 };
 
 // input keys for the player
@@ -107,7 +104,6 @@ Player.prototype.handleInput = function(key) {
     else if (key == 'right' && this.column < 4){
         this.column++;
         }
-
         
     // log where enemies and player are.
 	// console.log("handleInput /// x: " + this.x + " y: " + this.y + " column:" + this.column + " row: " + this.row);	
